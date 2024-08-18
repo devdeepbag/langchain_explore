@@ -1,7 +1,6 @@
 # main.py
 
-from langchain import LangChain
-from langchain.llms import OpenAI
+from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 import os
@@ -16,27 +15,34 @@ def explore_langchain():
     if not openai_api_key:
         raise ValueError("API key for OpenAI is not set in the environment variables")
 
-    # Initialize LangChain
-    print("Initializing LangChain...")
-    lc = LangChain()
-
     # Example: Using OpenAI model
     print("\nExploring OpenAI model...")
-    openai_model = OpenAI(api_key=openai_api_key)
+    try:
+        openai_model = OpenAI(api_key=openai_api_key)
+    except Exception as e:
+        print(f"Error initializing OpenAI model: {e}")
+        return
 
     # Define a prompt template
     prompt_template = PromptTemplate(template="What is the capital of {country}?")
 
     # Create an LLM chain with OpenAI model and prompt template
-    llm_chain = LLMChain(llm=openai_model, prompt_template=prompt_template)
+    try:
+        llm_chain = LLMChain(
+            llm=openai_model,
+            prompt=prompt_template  # Update to `prompt` if `prompt_template` is deprecated
+        )
+    except Exception as e:
+        print(f"Error creating LLMChain: {e}")
+        return
 
     # Run the chain
     country = "France"
-    response = llm_chain.run(country=country)
-    print(f"Response from OpenAI model: {response}")
-
-    # Example: Demonstrating a different module or feature of LangChain
-    # (Add more examples based on LangChain's features)
+    try:
+        response = llm_chain.run(country=country)
+        print(f"Response from OpenAI model: {response}")
+    except Exception as e:
+        print(f"Error running the chain: {e}")
 
 if __name__ == "__main__":
     explore_langchain()

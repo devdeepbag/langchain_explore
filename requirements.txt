@@ -1,4 +1,4 @@
-langchain
-requests
-pandas
+langchain-community
+langchain-openai
+openai
 python-dotenv
