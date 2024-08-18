@@ -4,8 +4,6 @@ This tutorial guides you through building a simple LLM application using LangCha
 
 Based on https://github.com/devdeepbag/langchain_explore
 
-![LangChain Project](tutorials/01_build_a_simple_llm_with_llmchain/ai-image-tutorial1.png)
-
 ## Overview
 
 - **Set Up**: Install dependencies and configure environment variables.
