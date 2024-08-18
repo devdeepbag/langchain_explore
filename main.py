@@ -2,7 +2,6 @@
 
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 import os
 from dotenv import load_dotenv
 
@@ -26,23 +25,16 @@ def explore_langchain():
     # Define a prompt template
     prompt_template = PromptTemplate(template="What is the capital of {country}?")
 
-    # Create an LLM chain with OpenAI model and prompt template
-    try:
-        llm_chain = LLMChain(
-            llm=openai_model,
-            prompt=prompt_template  # Update to `prompt` if `prompt_template` is deprecated
-        )
-    except Exception as e:
-        print(f"Error creating LLMChain: {e}")
-        return
-
-    # Run the chain
+    # Manually format the prompt with the template
     country = "France"
+    prompt = prompt_template.format(country=country)
+
+    # Get response from the OpenAI model using the invoke method
     try:
-        response = llm_chain.run(country=country)
+        response = openai_model.invoke(prompt)
         print(f"Response from OpenAI model: {response}")
     except Exception as e:
-        print(f"Error running the chain: {e}")
+        print(f"Error running the model: {e}")
 
 if __name__ == "__main__":
     explore_langchain()
