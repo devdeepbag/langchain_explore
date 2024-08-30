@@ -8,6 +8,7 @@ from langchain_core.chat_history import (
 )
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
+
 # Load environment variables from the .env file
 load_dotenv()
 
@@ -41,30 +42,32 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
         print(f"Retrieving existing chat history for session: {session_id}")
     return store[session_id]
 
+
+#########
+# Starting chat1 - simple Q&A with memory
+#########
+
 # Define the configuration to be passed into the RunnableWithMessageHistory
-config1 = {"configurable": {"session_id": "abc1"}}
-config2 = {"configurable": {"session_id": "abc2"}}
+config = {"configurable": {"session_id": "chat1"}}
 
 # Create a RunnableWithMessageHistory instance to handle chat sessions
 with_message_history = RunnableWithMessageHistory(model, get_session_history)
 
 # Store a message in the first session
-_ = with_message_history.invoke(
+response = with_message_history.invoke(
     [HumanMessage(content="Hi! I'm Bob")],
-    config=config1,
+    config=config,
 )
 
 # Verify that the initial message is stored in the first session
-print("Session abc1 history:", store["abc1"].messages)
+# print("Session abc1 history:", store["abc1"].messages)
 
-# Now, use a different session ID and ask a question to see if it remembers
+# Now, send another message to check it remembers you
 response = with_message_history.invoke(
     [HumanMessage(content="What's my name?")],
-    config=config2,
+    config=config,
 )
 
-# Print the response content for the new session
-print("Response content for session abc2:", response.content)
+# Verify chat history
+print("Session chat1 history:", store["chat1"].messages)
 
-# Verify that the new session does not have any chat history
-print("Session abc2 history:", store["abc2"].messages)
