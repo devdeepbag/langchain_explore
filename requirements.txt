@@ -3,3 +3,6 @@ langchain-openai
 openai
 python-dotenv
 langserve[all]
+langchain-chroma
+langchain-openai
+faiss-cpu
